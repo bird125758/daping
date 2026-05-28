@@ -187,10 +187,14 @@ const calculateYAxisMax = (values) => {
   
   if (ratio <= 1) {
     yMax = magnitude
+  } else if (ratio <= 1.2) {
+    yMax = magnitude * 1.2
   } else if (ratio <= 1.5) {
     yMax = magnitude * 1.5
   } else if (ratio <= 2) {
     yMax = magnitude * 2
+  } else if (ratio <= 2.5) {
+    yMax = magnitude * 2.5
   } else if (ratio <= 3) {
     yMax = magnitude * 3
   } else if (ratio <= 4) {
