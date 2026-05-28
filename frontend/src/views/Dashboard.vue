@@ -176,26 +176,20 @@ const calculateYAxisMax = (values) => {
   const maxValue = Math.max(...values)
   if (maxValue <= 0) return 100
   
-  // 根据数据范围确定合适的刻度间隔
-  let interval
-  if (maxValue <= 100) {
-    interval = 20
-  } else if (maxValue <= 1000) {
-    interval = 200
-  } else if (maxValue <= 10000) {
-    interval = 2000
-  } else if (maxValue <= 20000) {
-    interval = 5000  // 修改：10000-20000范围使用5000间隔
-  } else if (maxValue <= 100000) {
-    interval = 20000
-  } else if (maxValue <= 1000000) {
-    interval = 200000
+  // 找到数据的数量级
+  const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)))
+  
+  // 高一个数量级并向上取整
+  let yMax
+  if (maxValue <= magnitude) {
+    // 如果数据正好在数量级上，取下一个数量级
+    yMax = magnitude * 10
   } else {
-    interval = 2000000
+    // 否则向上取整到下一个数量级的倍数
+    yMax = Math.ceil(maxValue / magnitude) * magnitude
   }
   
-  // 向上取整到能被interval整除的值
-  return Math.ceil(maxValue / interval) * interval
+  return yMax
 }
 
 const initIndustryChainChart = () => {
