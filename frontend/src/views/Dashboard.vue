@@ -184,6 +184,8 @@ const calculateYAxisMax = (values) => {
     interval = 200
   } else if (maxValue <= 10000) {
     interval = 2000
+  } else if (maxValue <= 20000) {
+    interval = 5000  // 修改：10000-20000范围使用5000间隔
   } else if (maxValue <= 100000) {
     interval = 20000
   } else if (maxValue <= 1000000) {
