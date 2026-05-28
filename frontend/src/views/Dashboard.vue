@@ -150,7 +150,8 @@ const chartData = ref({
 // 从后端加载数据
 const loadData = async () => {
   try {
-    const response = await axios.get('http://localhost:3001/api/data')
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+    const response = await axios.get(`${apiUrl}/api/data`)
     chartData.value = response.data
     refreshCharts()
   } catch (error) {

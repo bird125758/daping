@@ -1,0 +1,13 @@
+# Render 部署配置
+services:
+  - type: web
+    name: daping-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000

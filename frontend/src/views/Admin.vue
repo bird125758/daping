@@ -151,7 +151,8 @@ const modules = [
 const loadData = async () => {
   try {
     console.log('开始加载数据，当前模块:', currentModule.value)
-    const response = await axios.get('http://localhost:3001/api/data')
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+    const response = await axios.get(`${apiUrl}/api/data`)
     console.log('数据加载成功:', response.data)
     const data = response.data
     setFormData(data[currentModule.value])
@@ -271,9 +272,10 @@ const saveData = async () => {
     console.log('当前模块:', currentModule.value)
     console.log('要保存的数据:', JSON.stringify(formData.value, null, 2))
     
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
     // 将驼峰命名转换为连字符格式
     const apiPath = currentModule.value.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
-    const url = `http://localhost:3001/api/data/${apiPath}`
+    const url = `${apiUrl}/api/data/${apiPath}`
     console.log('请求URL:', url)
     
     const response = await axios.put(url, formData.value)
