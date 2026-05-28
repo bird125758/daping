@@ -176,55 +176,42 @@ const calculateYAxisMax = (values) => {
   const maxValue = Math.max(...values)
   if (maxValue <= 0) return 100
   
-  // 根据数据范围计算Y轴最大值
-  // 规范：高一个数量级并向上取整
-  // 例如：4301→5000, 10225→15000, 768613→800000
-  
   // 找到数据的数量级
   const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)))
-  
-  // 计算高一个数量级的合理值
-  let yMax
   
   // 计算数据在数量级的哪个区间
   const ratio = maxValue / magnitude
   
+  // 计算高一个数量级的合理值
+  let yMax
+  
   if (ratio <= 1) {
-    // 0-1倍，取1倍（向上取整）
     yMax = magnitude
   } else if (ratio <= 1.5) {
-    // 1-1.5倍，取1.5倍
     yMax = magnitude * 1.5
   } else if (ratio <= 2) {
-    // 1.5-2倍，取2倍
     yMax = magnitude * 2
   } else if (ratio <= 3) {
-    // 2-3倍，取3倍
     yMax = magnitude * 3
   } else if (ratio <= 4) {
-    // 3-4倍，取4倍
     yMax = magnitude * 4
   } else if (ratio <= 5) {
-    // 4-5倍，取5倍
     yMax = magnitude * 5
   } else if (ratio <= 6) {
-    // 5-6倍，取6倍
     yMax = magnitude * 6
   } else if (ratio <= 7) {
-    // 6-7倍，取7倍
     yMax = magnitude * 7
   } else if (ratio <= 8) {
-    // 7-8倍，取8倍
     yMax = magnitude * 8
   } else if (ratio <= 9) {
-    // 8-9倍，取9倍
     yMax = magnitude * 9
   } else {
-    // 9-10倍，取10倍
     yMax = magnitude * 10
   }
   
-  return Math.ceil(yMax)
+  const result = Math.ceil(yMax)
+  console.log('calculateYAxisMax:', { maxValue, magnitude, ratio, yMax, result })
+  return result
 }
 
 const initIndustryChainChart = () => {
