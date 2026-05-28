@@ -219,16 +219,7 @@ const initIndustryChainChart = () => {
   const values = chartData.value.industryChain.values
   const yMax = calculateYAxisMax(values)
   chart.setOption({
-    title: {
-      text: `Y轴最大值: ${yMax} (数据最大: ${Math.max(...values)})`,
-      left: 'center',
-      top: 0,
-      textStyle: {
-        color: '#ff0000',
-        fontSize: 14
-      }
-    },
-    grid: { top: 50, right: 30, bottom: 35, left: 55 },
+    grid: { top: 30, right: 30, bottom: 35, left: 55 },
     xAxis: {
       type: 'category',
       data: chartData.value.industryChain.years,
