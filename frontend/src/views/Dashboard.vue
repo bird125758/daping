@@ -189,12 +189,15 @@ const calculateYAxisMax = (values) => {
   // 计算数据在数量级的哪个区间
   const ratio = maxValue / magnitude
   
-  if (ratio <= 1.5) {
-    // 0-1.5倍，取2倍
-    yMax = magnitude * 2
+  if (ratio <= 1) {
+    // 0-1倍，取1倍（向上取整）
+    yMax = magnitude
+  } else if (ratio <= 1.5) {
+    // 1-1.5倍，取1.5倍
+    yMax = magnitude * 1.5
   } else if (ratio <= 2) {
-    // 1.5-2倍，取2.5倍
-    yMax = magnitude * 2.5
+    // 1.5-2倍，取2倍
+    yMax = magnitude * 2
   } else if (ratio <= 3) {
     // 2-3倍，取3倍
     yMax = magnitude * 3
