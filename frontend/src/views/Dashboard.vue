@@ -216,7 +216,13 @@ const calculateYAxisMax = (values) => {
 const initIndustryChainChart = () => {
   if (!industryChainRef.value) return
   const chart = echarts.init(industryChainRef.value)
-  const yMax = calculateYAxisMax(chartData.value.industryChain.values)
+  const values = chartData.value.industryChain.values
+  const yMax = calculateYAxisMax(values)
+  console.log('=== 产业链长Y轴调试 ===')
+  console.log('数据:', values)
+  console.log('最大值:', Math.max(...values))
+  console.log('计算结果yMax:', yMax)
+  console.log('=====================')
   chart.setOption({
     grid: { top: 30, right: 30, bottom: 35, left: 55 },
     xAxis: {
