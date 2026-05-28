@@ -210,7 +210,6 @@ const calculateYAxisMax = (values) => {
   }
   
   const result = Math.ceil(yMax)
-  console.log('calculateYAxisMax:', { maxValue, magnitude, ratio, yMax, result })
   return result
 }
 
