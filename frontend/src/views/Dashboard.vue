@@ -176,16 +176,29 @@ const calculateYAxisMax = (values) => {
   const maxValue = Math.max(...values)
   if (maxValue <= 0) return 100
   
+  // 根据数据范围计算Y轴最大值
+  // 规范：高一个数量级并向上取整
+  // 例如：4301→5000, 10225→15000, 768613→800000
+  
   // 找到数据的数量级
   const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)))
   
-  // 高一个数量级并向上取整
+  // 计算应该显示的倍数（高一个数量级）
+  // 例如：10225，数量级是10000，高一个数量级就是15000（1.5倍）
+  //      4919，数量级是1000，高一个数量级就是5000（5倍）
   let yMax
-  if (maxValue <= magnitude) {
-    // 如果数据正好在数量级上，取下一个数量级
+  
+  if (maxValue <= magnitude * 2) {
+    // 数据在1-2倍数量级之间，取1.5倍
+    yMax = magnitude * 2
+  } else if (maxValue <= magnitude * 5) {
+    // 数据在2-5倍数量级之间，取5倍
+    yMax = magnitude * 5
+  } else if (maxValue <= magnitude * 10) {
+    // 数据在5-10倍数量级之间，取10倍
     yMax = magnitude * 10
   } else {
-    // 否则向上取整到下一个数量级的倍数
+    // 超过10倍，向上取整到下一个数量级
     yMax = Math.ceil(maxValue / magnitude) * magnitude
   }
   
