@@ -59,9 +59,19 @@ const defaultData = {
   ]
 };
 
-// 确保数据文件存在
-if (!fs.existsSync(dataFile)) {
+// 确保数据文件存在（每次部署都从代码更新数据）
+// 这样代码推送更新数据，后台修改也实时生效
+try {
+  // 读取代码中的最新数据
+  const codeData = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+  // 写入到服务器数据文件
+  fs.writeFileSync(dataFile, JSON.stringify(codeData, null, 2));
+  console.log('已从代码加载最新数据');
+} catch (error) {
+  console.error('加载数据文件失败:', error);
+  // 如果加载失败，使用默认数据
   fs.writeFileSync(dataFile, JSON.stringify(defaultData, null, 2));
+  console.log('已使用默认数据');
 }
 
 // API路由
