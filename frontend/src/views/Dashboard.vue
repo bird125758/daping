@@ -183,26 +183,45 @@ const calculateYAxisMax = (values) => {
   // 找到数据的数量级
   const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)))
   
-  // 计算应该显示的倍数（高一个数量级）
-  // 例如：10225，数量级是10000，高一个数量级就是15000（1.5倍）
-  //      4919，数量级是1000，高一个数量级就是5000（5倍）
+  // 计算高一个数量级的合理值
   let yMax
   
-  if (maxValue <= magnitude * 2) {
-    // 数据在1-2倍数量级之间，取1.5倍
+  // 计算数据在数量级的哪个区间
+  const ratio = maxValue / magnitude
+  
+  if (ratio <= 1.5) {
+    // 0-1.5倍，取2倍
     yMax = magnitude * 2
-  } else if (maxValue <= magnitude * 5) {
-    // 数据在2-5倍数量级之间，取5倍
+  } else if (ratio <= 2) {
+    // 1.5-2倍，取2.5倍
+    yMax = magnitude * 2.5
+  } else if (ratio <= 3) {
+    // 2-3倍，取3倍
+    yMax = magnitude * 3
+  } else if (ratio <= 4) {
+    // 3-4倍，取4倍
+    yMax = magnitude * 4
+  } else if (ratio <= 5) {
+    // 4-5倍，取5倍
     yMax = magnitude * 5
-  } else if (maxValue <= magnitude * 10) {
-    // 数据在5-10倍数量级之间，取10倍
-    yMax = magnitude * 10
+  } else if (ratio <= 6) {
+    // 5-6倍，取6倍
+    yMax = magnitude * 6
+  } else if (ratio <= 7) {
+    // 6-7倍，取7倍
+    yMax = magnitude * 7
+  } else if (ratio <= 8) {
+    // 7-8倍，取8倍
+    yMax = magnitude * 8
+  } else if (ratio <= 9) {
+    // 8-9倍，取9倍
+    yMax = magnitude * 9
   } else {
-    // 超过10倍，向上取整到下一个数量级
-    yMax = Math.ceil(maxValue / magnitude) * magnitude
+    // 9-10倍，取10倍
+    yMax = magnitude * 10
   }
   
-  return yMax
+  return Math.ceil(yMax)
 }
 
 const initIndustryChainChart = () => {
