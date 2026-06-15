@@ -744,7 +744,7 @@ const initBankLoanChart = () => {
           const valueText = {
             type: 'text',
             style: {
-              text: value.toFixed(2),
+              text: Math.round(value).toLocaleString(),
               fill: '#fff',
               fontSize: 16,
               fontWeight: 'bold',
