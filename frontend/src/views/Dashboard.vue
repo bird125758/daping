@@ -324,27 +324,27 @@ const initUserRegistrationChart = () => {
       type: 'line',
       smooth: true,
       lineStyle: { 
-        color: '#F4C95D',
+        color: '#FF8A65',
         width: 3,
-        shadowColor: 'rgba(244, 201, 93, 0.55)',
+        shadowColor: 'rgba(255, 138, 101, 0.5)',
         shadowBlur: 10,
         shadowOffsetY: 5
       },
       itemStyle: { 
-        color: '#F4C95D',
-        borderColor: '#FFF3C4',
+        color: '#FF8A65',
+        borderColor: '#FFE1D6',
         borderWidth: 2
       },
       areaStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: 'rgba(244, 201, 93, 0.38)' },
-          { offset: 1, color: 'rgba(244, 201, 93, 0.06)' }
+          { offset: 0, color: 'rgba(255, 138, 101, 0.28)' },
+          { offset: 1, color: 'rgba(255, 138, 101, 0.04)' }
         ])
       },
       label: {
         show: true,
         position: 'top',
-        color: '#FFE08A',
+        color: '#FFD0BC',
         fontSize: 9,
         fontWeight: 'bold',
         formatter: formatChartLabel
