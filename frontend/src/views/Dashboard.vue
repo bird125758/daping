@@ -48,27 +48,13 @@
             <div class="corner corner-br"></div>
           </div>
           <div class="chart-header">
-            <h3>合作银行走势图</h3>
-            <span class="unit">单位：家</span>
-          </div>
-          <div ref="cooperationBankRef" class="chart-container"></div>
-        </div>
-
-        <!-- 第二行 -->
-        <div class="chart-card">
-          <div class="card-border">
-            <div class="corner corner-tl"></div>
-            <div class="corner corner-tr"></div>
-            <div class="corner corner-bl"></div>
-            <div class="corner corner-br"></div>
-          </div>
-          <div class="chart-header">
             <h3>行业分布top10</h3>
             <span class="unit">单位：家</span>
           </div>
           <div ref="industryDistributionRef" class="chart-container-horizontal"></div>
         </div>
 
+        <!-- 第二行 -->
         <div class="chart-card chart-large">
           <div class="card-border">
             <div class="corner corner-tl"></div>
@@ -81,6 +67,20 @@
             <span class="unit">单位：亿元</span>
           </div>
           <div ref="financingRef" class="chart-container"></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-border">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+          </div>
+          <div class="chart-header">
+            <h3>合作银行走势图</h3>
+            <span class="unit">单位：家</span>
+          </div>
+          <div ref="cooperationBankRef" class="chart-container"></div>
         </div>
 
         <div class="chart-card">
@@ -871,7 +871,7 @@ onBeforeUnmount(() => {
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 40% 60%;
+  grid-template-rows: repeat(2, 1fr);
   gap: 20px;
   height: 100%;
 }
