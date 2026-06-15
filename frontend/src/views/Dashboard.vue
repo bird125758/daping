@@ -217,6 +217,19 @@ const calculateYAxisMax = (values) => {
   return result
 }
 
+const formatNumber = (value) => {
+  const numberValue = Number(value)
+  return Number.isFinite(numberValue) ? numberValue.toLocaleString('en-US') : String(value ?? '')
+}
+
+const formatChartLabel = (params) => formatNumber(params.value)
+
+const getValueAxisLabel = () => ({
+  color: '#A3C1E7',
+  fontSize: 11,
+  formatter: formatNumber
+})
+
 const initIndustryChainChart = () => {
   if (!industryChainRef.value) return
   const chart = echarts.init(industryChainRef.value)
@@ -240,7 +253,7 @@ const initIndustryChainChart = () => {
       type: 'value',
       max: yMax,
       axisLine: { lineStyle: { color: 'rgba(74, 144, 226, 0.5)' } },
-      axisLabel: { color: '#A3C1E7', fontSize: 11 },
+      axisLabel: getValueAxisLabel(),
       splitLine: { 
         lineStyle: { 
           color: 'rgba(74, 144, 226, 0.15)',
@@ -268,7 +281,8 @@ const initIndustryChainChart = () => {
         position: 'top',
         color: '#FFB347',
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        formatter: formatChartLabel
       }
     }]
   })
@@ -297,7 +311,7 @@ const initUserRegistrationChart = () => {
       type: 'value',
       max: yMax,
       axisLine: { lineStyle: { color: 'rgba(74, 144, 226, 0.5)' } },
-      axisLabel: { color: '#A3C1E7', fontSize: 11 },
+      axisLabel: getValueAxisLabel(),
       splitLine: { 
         lineStyle: { 
           color: 'rgba(74, 144, 226, 0.15)',
@@ -332,7 +346,8 @@ const initUserRegistrationChart = () => {
         position: 'top',
         color: '#A3C1E7',
         fontSize: 9,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        formatter: formatChartLabel
       },
       symbolSize: 6
     }]
@@ -362,7 +377,7 @@ const initCooperationBankChart = () => {
       type: 'value',
       max: yMax,
       axisLine: { lineStyle: { color: 'rgba(74, 144, 226, 0.5)' } },
-      axisLabel: { color: '#A3C1E7', fontSize: 11 },
+      axisLabel: getValueAxisLabel(),
       splitLine: { 
         lineStyle: { 
           color: 'rgba(74, 144, 226, 0.15)',
@@ -390,7 +405,8 @@ const initCooperationBankChart = () => {
         position: 'top',
         color: '#FFB347',
         fontSize: 9,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        formatter: formatChartLabel
       }
     }]
   })
@@ -496,7 +512,7 @@ const initIndustryDistributionChart = () => {
           const valueText = {
             type: 'text',
             style: {
-              text: value.toLocaleString(),
+              text: formatNumber(value),
               fill: '#fff',
               fontSize: 16,
               fontWeight: 'bold',
@@ -567,7 +583,7 @@ const initFinancingChart = () => {
       type: 'value',
       max: yMax,
       axisLine: { lineStyle: { color: 'rgba(74, 144, 226, 0.5)' } },
-      axisLabel: { color: '#A3C1E7', fontSize: 11 },
+      axisLabel: getValueAxisLabel(),
       splitLine: { 
         lineStyle: { 
           color: 'rgba(74, 144, 226, 0.15)',
@@ -604,7 +620,8 @@ const initFinancingChart = () => {
           position: 'top',
           color: '#FFB347',
           fontSize: 9,
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          formatter: formatChartLabel
         },
         symbolSize: 6
       },
@@ -636,7 +653,8 @@ const initFinancingChart = () => {
           position: 'top',
           color: '#81C784',
           fontSize: 9,
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          formatter: formatChartLabel
         },
         symbolSize: 6
       }
@@ -744,7 +762,7 @@ const initBankLoanChart = () => {
           const valueText = {
             type: 'text',
             style: {
-              text: Math.round(value).toLocaleString(),
+              text: formatNumber(Math.round(value)),
               fill: '#fff',
               fontSize: 16,
               fontWeight: 'bold',
