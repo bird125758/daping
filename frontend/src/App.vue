@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watchEffect } from 'vue'
 import Dashboard from './views/Dashboard.vue'
 import Admin from './views/Admin.vue'
 
@@ -29,13 +29,59 @@ const toggleLabelChars = computed(() => toggleLabel.value.split(''))
 const toggleView = () => {
   isAdmin.value = !isAdmin.value
 }
+
+const stopPageModeWatcher = watchEffect(() => {
+  const isDashboard = !isAdmin.value
+  document.documentElement.classList.toggle('dashboard-mode', isDashboard)
+  document.body.classList.toggle('dashboard-mode', isDashboard)
+  document.documentElement.classList.toggle('admin-mode', isAdmin.value)
+  document.body.classList.toggle('admin-mode', isAdmin.value)
+})
+
+onBeforeUnmount(() => {
+  stopPageModeWatcher()
+  document.documentElement.classList.remove('dashboard-mode', 'admin-mode')
+  document.body.classList.remove('dashboard-mode', 'admin-mode')
+})
 </script>
 
 <style>
+html.dashboard-mode,
+body.dashboard-mode {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.admin-mode,
+body.admin-mode {
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;
+}
+
 #app {
   width: 100vw;
   min-height: 100vh;
   position: relative;
+}
+
+body.dashboard-mode #app {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+body.admin-mode #app {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
 }
 
 .toggle-btn {
