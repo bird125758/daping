@@ -51,7 +51,30 @@
             <h3>行业分布top10</h3>
             <span class="unit">单位：家</span>
           </div>
-          <div ref="industryDistributionRef" class="chart-container-horizontal"></div>
+          <div class="top-list">
+            <div 
+              v-for="row in industryDistributionRows" 
+              :key="row.name"
+              class="top-list-row"
+            >
+              <div class="top-list-main">
+                <div class="top-list-name-wrap">
+                  <span :class="['rank-badge', `rank-${row.rank <= 3 ? row.rank : 'normal'}`]">{{ row.rank }}</span>
+                  <span class="top-list-name">{{ row.name }}</span>
+                </div>
+                <div class="top-list-metrics">
+                  <span class="top-list-value">{{ row.displayValue }}</span>
+                  <span class="top-list-percent">{{ row.percent }}</span>
+                </div>
+              </div>
+              <div class="top-list-track">
+                <div 
+                  :class="['top-list-bar', `bar-${row.rank <= 3 ? row.rank : 'normal'}`]"
+                  :style="{ width: row.width + '%' }"
+                ></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 第二行 -->
@@ -94,7 +117,30 @@
             <h3>银行放款top10</h3>
             <span class="unit">单位：亿元</span>
           </div>
-          <div ref="bankLoanRef" class="chart-container-horizontal"></div>
+          <div class="top-list">
+            <div 
+              v-for="row in bankLoanRows" 
+              :key="row.name"
+              class="top-list-row"
+            >
+              <div class="top-list-main">
+                <div class="top-list-name-wrap">
+                  <span :class="['rank-badge', `rank-${row.rank <= 3 ? row.rank : 'normal'}`]">{{ row.rank }}</span>
+                  <span class="top-list-name">{{ row.name }}</span>
+                </div>
+                <div class="top-list-metrics">
+                  <span class="top-list-value">{{ row.displayValue }}</span>
+                  <span class="top-list-percent">{{ row.percent }}</span>
+                </div>
+              </div>
+              <div class="top-list-track">
+                <div 
+                  :class="['top-list-bar', `bar-${row.rank <= 3 ? row.rank : 'normal'}`]"
+                  :style="{ width: row.width + '%' }"
+                ></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -146,6 +192,23 @@ const chartData = ref({
   financing: { years: [], industryConfirmation: [], financingLoan: [] },
   bankLoan: []
 })
+
+const buildTopRows = (items, options = {}) => {
+  const maxValue = Math.max(...items.map(item => Number(item.value) || 0), 1)
+  return items.map((item, index) => {
+    const value = Number(item.value) || 0
+    const displayValue = options.roundValue ? Math.round(value) : value
+    return {
+      ...item,
+      rank: index + 1,
+      width: Math.max((value / maxValue) * 100, 2),
+      displayValue: formatNumber(displayValue)
+    }
+  })
+}
+
+const industryDistributionRows = computed(() => buildTopRows(chartData.value.industryDistribution))
+const bankLoanRows = computed(() => buildTopRows(chartData.value.bankLoan, { roundValue: true }))
 
 // 从后端加载数据
 const loadData = async () => {
@@ -984,5 +1047,134 @@ onBeforeUnmount(() => {
 .chart-container-horizontal {
   flex: 1;
   min-height: 0;
+}
+
+.top-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px 8px 10px;
+}
+
+.top-list-row {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+
+.top-list-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 22px;
+}
+
+.top-list-name-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rank-badge {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.25);
+}
+
+.rank-1 {
+  background: #FF5722;
+}
+
+.rank-2 {
+  background: #FF8C42;
+}
+
+.rank-3 {
+  background: #FFB347;
+}
+
+.rank-normal {
+  background: #4A90E2;
+}
+
+.top-list-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #A3C1E7;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.top-list-metrics {
+  flex: 0 0 150px;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.top-list-value {
+  width: 82px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: right;
+}
+
+.top-list-percent {
+  width: 54px;
+  color: #A3C1E7;
+  font-size: 13px;
+  line-height: 1.1;
+  text-align: right;
+}
+
+.top-list-track {
+  height: 5px;
+  margin-left: 30px;
+  margin-right: 164px;
+  overflow: hidden;
+}
+
+.top-list-bar {
+  height: 5px;
+  max-width: 100%;
+  border-radius: 0 5px 5px 0;
+  box-shadow: 0 0 6px rgba(74, 144, 226, 0.25);
+}
+
+.bar-1 {
+  background: linear-gradient(90deg, rgba(255, 87, 34, 0.55), #FF5722);
+}
+
+.bar-2 {
+  background: linear-gradient(90deg, rgba(255, 140, 66, 0.55), #FF8C42);
+}
+
+.bar-3 {
+  background: linear-gradient(90deg, rgba(255, 179, 71, 0.55), #FFB347);
+}
+
+.bar-normal {
+  background: linear-gradient(90deg, rgba(74, 144, 226, 0.5), #4A90E2);
 }
 </style>

@@ -1,8 +1,14 @@
 <template>
   <div id="app">
     <!-- 切换按钮 -->
-    <button @click="toggleView" class="toggle-btn">
-      {{ isAdmin ? '查看大屏' : '后台管理' }}
+    <button @click="toggleView" class="toggle-btn" :aria-label="toggleLabel">
+      <span 
+        v-for="(char, index) in toggleLabelChars" 
+        :key="`${char}-${index}`"
+        class="toggle-char"
+      >
+        {{ char }}
+      </span>
     </button>
     
     <Dashboard v-if="!isAdmin" />
@@ -11,11 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Dashboard from './views/Dashboard.vue'
 import Admin from './views/Admin.vue'
 
 const isAdmin = ref(false)
+
+const toggleLabel = computed(() => isAdmin.value ? '查看大屏' : '后台管理')
+const toggleLabelChars = computed(() => toggleLabel.value.split(''))
 
 const toggleView = () => {
   isAdmin.value = !isAdmin.value
@@ -32,21 +41,35 @@ const toggleView = () => {
 .toggle-btn {
   position: fixed;
   top: 50%;
-  right: -50px; /* 隐藏在页面右侧边缘外 */
+  right: -56px; /* 只露出窄把手，避免遮挡右侧图表数据 */
   transform: translateY(-50%);
   z-index: 1000;
-  padding: 12px 20px;
+  width: 72px;
+  min-height: 128px;
+  padding: 12px 10px 12px 14px;
   background: rgba(74, 144, 226, 0.9);
   color: white;
   border: none;
   border-radius: 8px 0 0 8px; /* 左侧圆角 */
   cursor: pointer;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 16px;
+  line-height: 1.15;
+  font-weight: bold;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
   transition: right 0.3s ease, background 0.3s ease; /* 添加过渡动画 */
-  writing-mode: vertical-rl; /* 竖排文字 */
-  text-orientation: mixed;
-  letter-spacing: 4px;
+  letter-spacing: 0;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.toggle-char {
+  display: block;
+  white-space: nowrap;
 }
 
 .toggle-btn:hover {
