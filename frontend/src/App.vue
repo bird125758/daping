@@ -40,7 +40,8 @@ const toggleView = () => {
 
 .toggle-btn {
   position: fixed;
-  top: 50%;
+  top: 53%;
+  top: calc(50vh + min(2.7vw, 102px));
   right: -56px; /* 只露出窄把手，避免遮挡右侧图表数据 */
   transform: translateY(-50%);
   z-index: 1000;

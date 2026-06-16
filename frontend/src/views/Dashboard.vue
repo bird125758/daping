@@ -947,6 +947,7 @@ onBeforeUnmount(() => {
   flex: 1;
   padding: 20px;
   overflow: hidden;
+  min-height: 0;
 }
 
 .charts-grid {
@@ -955,11 +956,13 @@ onBeforeUnmount(() => {
   grid-template-rows: repeat(2, 1fr);
   gap: 20px;
   height: 100%;
+  min-height: 0;
 }
 
 /* 卡片样式 */
 .chart-card {
   position: relative;
+  min-height: 0;
   background: linear-gradient(180deg, 
     rgba(13, 31, 60, 0.95) 0%, 
     rgba(10, 25, 50, 0.95) 100%);
@@ -968,6 +971,7 @@ onBeforeUnmount(() => {
   padding: 15px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   box-shadow: 0 0 30px rgba(74, 144, 226, 0.1),
               inset 0 0 30px rgba(74, 144, 226, 0.05);
 }
@@ -1124,7 +1128,7 @@ onBeforeUnmount(() => {
 }
 
 .top-list-metrics {
-  flex: 0 0 150px;
+  flex: 0 0 140px;
   display: flex;
   align-items: baseline;
   justify-content: flex-end;
@@ -1151,7 +1155,7 @@ onBeforeUnmount(() => {
 .top-list-track {
   height: 5px;
   margin-left: 30px;
-  margin-right: 164px;
+  margin-right: 40px;
   overflow: hidden;
 }
 
