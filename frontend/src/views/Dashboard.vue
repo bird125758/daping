@@ -1160,7 +1160,7 @@ onBeforeUnmount(() => {
   flex: 0 0 4px;
   height: 4px;
   margin-left: 31px;
-  margin-right: 190px;
+  margin-right: 120px;
   overflow: hidden;
 }
 
