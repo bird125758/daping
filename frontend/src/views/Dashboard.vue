@@ -1059,7 +1059,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 14px 8px 10px;
+  padding: 16px 8px 12px;
 }
 
 .top-list-row {
@@ -1068,15 +1068,15 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3px;
+  gap: 5px;
 }
 
 .top-list-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  min-height: 22px;
+  gap: 14px;
+  min-height: 20px;
 }
 
 .top-list-name-wrap {
@@ -1084,17 +1084,17 @@ onBeforeUnmount(() => {
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
 }
 
 .rank-badge {
-  flex: 0 0 22px;
-  width: 22px;
-  height: 22px;
-  line-height: 22px;
+  flex: 0 0 21px;
+  width: 21px;
+  height: 21px;
+  line-height: 21px;
   border-radius: 3px;
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   text-align: center;
   box-shadow: 0 0 8px rgba(74, 144, 226, 0.25);
@@ -1120,65 +1120,88 @@ onBeforeUnmount(() => {
   min-width: 0;
   overflow: hidden;
   color: #A3C1E7;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .top-list-metrics {
-  flex: 0 0 140px;
+  flex: 0 0 154px;
   display: flex;
   align-items: baseline;
   justify-content: flex-end;
-  gap: 14px;
+  gap: 20px;
 }
 
 .top-list-value {
-  width: 82px;
+  width: 86px;
   color: #fff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   line-height: 1.1;
   text-align: right;
 }
 
 .top-list-percent {
-  width: 54px;
+  width: 58px;
   color: #A3C1E7;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.1;
   text-align: right;
 }
 
 .top-list-track {
-  height: 5px;
-  margin-left: 30px;
-  margin-right: 40px;
+  flex: 0 0 8px;
+  height: 8px;
+  margin-left: 31px;
+  margin-right: 58px;
   overflow: hidden;
+  border-radius: 0 8px 8px 0;
+  background: rgba(74, 144, 226, 0.16);
+  box-shadow: inset 0 0 6px rgba(74, 144, 226, 0.16);
+  position: relative;
 }
 
 .top-list-bar {
-  height: 5px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  min-width: 22px;
+  height: 8px;
   max-width: 100%;
-  border-radius: 0 5px 5px 0;
-  box-shadow: 0 0 6px rgba(74, 144, 226, 0.25);
+  border-radius: 0 8px 8px 0;
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(74, 144, 226, 0.45);
+  transform: translateZ(0);
 }
 
 .bar-1 {
-  background: linear-gradient(90deg, rgba(255, 87, 34, 0.55), #FF5722);
+  background-color: #FF5722;
+  background-image: linear-gradient(90deg, #B9432B 0%, #FF5722 100%);
+  outline: 1px solid rgba(255, 122, 76, 0.85);
+  box-shadow: 0 0 12px rgba(255, 87, 34, 0.58);
 }
 
 .bar-2 {
-  background: linear-gradient(90deg, rgba(255, 140, 66, 0.55), #FF8C42);
+  background-color: #FF8C42;
+  background-image: linear-gradient(90deg, #B56D3A 0%, #FF8C42 100%);
+  outline: 1px solid rgba(255, 172, 104, 0.82);
+  box-shadow: 0 0 12px rgba(255, 140, 66, 0.55);
 }
 
 .bar-3 {
-  background: linear-gradient(90deg, rgba(255, 179, 71, 0.55), #FFB347);
+  background-color: #FFB347;
+  background-image: linear-gradient(90deg, #B98433 0%, #FFB347 100%);
+  outline: 1px solid rgba(255, 202, 113, 0.82);
+  box-shadow: 0 0 12px rgba(255, 179, 71, 0.52);
 }
 
 .bar-normal {
-  background: linear-gradient(90deg, rgba(74, 144, 226, 0.5), #4A90E2);
+  background-color: #5AA7FF;
+  background-image: linear-gradient(90deg, #3F7FC9 0%, #5AA7FF 100%);
+  outline: 1px solid rgba(117, 185, 255, 0.7);
+  box-shadow: 0 0 10px rgba(90, 167, 255, 0.46);
 }
 </style>
