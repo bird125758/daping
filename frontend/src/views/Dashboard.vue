@@ -1157,8 +1157,8 @@ onBeforeUnmount(() => {
 }
 
 .top-list-track {
-  flex: 0 0 7px;
-  height: 7px;
+  flex: 0 0 4px;
+  height: 4px;
   margin-left: 31px;
   margin-right: 190px;
   overflow: hidden;
@@ -1167,9 +1167,9 @@ onBeforeUnmount(() => {
 .top-list-bar {
   display: block;
   min-width: 20px;
-  height: 7px;
+  height: 4px;
   max-width: 100%;
-  border-radius: 0 7px 7px 0;
+  border-radius: 0 4px 4px 0;
   opacity: 1;
   transform: translateZ(0);
 }
