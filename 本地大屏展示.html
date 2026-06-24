@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中企云链经营监控大屏-本地展示</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #041452;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+    }
+
+    .dashboard {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #041452;
+      color: #a3c1e7;
+    }
+
+    .dashboard-header {
+      position: relative;
+      flex: 0 0 min(5.34vw, 205px);
+      min-height: 74px;
+      overflow: hidden;
+      background-image:
+        linear-gradient(180deg, rgba(4, 20, 82, 0.15), rgba(4, 20, 82, 0.25)),
+        url("frontend/public/header-bg.gif");
+      background-size: contain;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    .header-title {
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      transform: translateX(-50%);
+      margin: 0;
+      color: rgba(205, 225, 255, 0.82);
+      font-size: clamp(24px, 2.05vw, 78px);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-shadow: 0 0 14px rgba(120, 185, 255, 0.55);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0.08;
+    }
+
+    .date {
+      position: absolute;
+      right: 2.5vw;
+      top: 34%;
+      color: #fff;
+      font-size: clamp(16px, 1.05vw, 40px);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      white-space: nowrap;
+    }
+
+    .dashboard-content {
+      flex: 1;
+      min-height: 0;
+      padding: clamp(10px, 1vw, 38px);
+      overflow: hidden;
+    }
+
+    .charts-grid {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: clamp(10px, 1vw, 38px);
+    }
+
+    .chart-card {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(12px, 0.8vw, 30px);
+      border: 1px solid rgba(74, 144, 226, 0.35);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(13, 31, 60, 0.96), rgba(10, 25, 50, 0.96));
+      box-shadow:
+        0 0 30px rgba(74, 144, 226, 0.12),
+        inset 0 0 30px rgba(74, 144, 226, 0.06);
+    }
+
+    .corner {
+      position: absolute;
+      width: clamp(18px, 1vw, 38px);
+      height: clamp(18px, 1vw, 38px);
+      pointer-events: none;
+    }
+
+    .corner-tl {
+      top: -1px;
+      left: -1px;
+      border-top: 3px solid #4a90e2;
+      border-left: 3px solid #4a90e2;
+      border-radius: 8px 0 0 0;
+    }
+
+    .corner-tr {
+      top: -1px;
+      right: -1px;
+      border-top: 3px solid #4a90e2;
+      border-right: 3px solid #4a90e2;
+      border-radius: 0 8px 0 0;
+    }
+
+    .corner-bl {
+      bottom: -1px;
+      left: -1px;
+      border-bottom: 3px solid #4a90e2;
+      border-left: 3px solid #4a90e2;
+      border-radius: 0 0 0 8px;
+    }
+
+    .corner-br {
+      right: -1px;
+      bottom: -1px;
+      border-right: 3px solid #4a90e2;
+      border-bottom: 3px solid #4a90e2;
+      border-radius: 0 0 8px 0;
+    }
+
+    .chart-header {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: clamp(8px, 0.55vw, 22px);
+      margin-bottom: clamp(8px, 0.65vw, 24px);
+      border-bottom: 1px solid rgba(74, 144, 226, 0.22);
+    }
+
+    .chart-header h2 {
+      margin: 0;
+      color: #a3c1e7;
+      font-size: clamp(16px, 1.25vw, 48px);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-shadow: 0 0 10px rgba(163, 193, 231, 0.35);
+      white-space: nowrap;
+    }
+
+    .unit {
+      color: #4a90e2;
+      font-size: clamp(12px, 0.75vw, 28px);
+      line-height: 1;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .chart-body {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .axis-text {
+      fill: #a3c1e7;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .label-text {
+      fill: #ffb347;
+      font-size: 18px;
+      font-weight: 800;
+      paint-order: stroke;
+      stroke: rgba(4, 20, 82, 0.75);
+      stroke-width: 4px;
+      stroke-linejoin: round;
+    }
+
+    .grid-line {
+      stroke: rgba(74, 144, 226, 0.24);
+      stroke-dasharray: 7 7;
+      stroke-width: 1.2;
+    }
+
+    .axis-line {
+      stroke: rgba(74, 144, 226, 0.72);
+      stroke-width: 1.6;
+    }
+
+    .top-list {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(8px, 0.65vw, 24px) clamp(6px, 0.45vw, 18px) clamp(5px, 0.35vw, 14px);
+    }
+
+    .top-row {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(2px, 0.18vw, 7px);
+    }
+
+    .top-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(8px, 0.5vw, 20px);
+      min-height: clamp(20px, 1.15vw, 44px);
+    }
+
+    .top-name-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: clamp(7px, 0.45vw, 18px);
+    }
+
+    .rank {
+      flex: 0 0 clamp(22px, 1.15vw, 44px);
+      width: clamp(22px, 1.15vw, 44px);
+      height: clamp(22px, 1.15vw, 44px);
+      line-height: clamp(22px, 1.15vw, 44px);
+      border-radius: 4px;
+      color: #fff;
+      font-size: clamp(12px, 0.7vw, 27px);
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 0 9px rgba(74, 144, 226, 0.28);
+    }
+
+    .rank-1 {
+      background: #ff5722;
+    }
+
+    .rank-2 {
+      background: #ff8c42;
+    }
+
+    .rank-3 {
+      background: #ffb347;
+    }
+
+    .rank-normal {
+      background: #4a90e2;
+    }
+
+    .top-name {
+      min-width: 0;
+      overflow: hidden;
+      color: #a3c1e7;
+      font-size: clamp(11px, 0.72vw, 27px);
+      line-height: 1.18;
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .top-metrics {
+      flex: 0 0 clamp(130px, 7.4vw, 285px);
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: clamp(12px, 0.8vw, 30px);
+    }
+
+    .top-value {
+      width: clamp(76px, 4.55vw, 175px);
+      color: #fff;
+      font-size: clamp(16px, 1.05vw, 40px);
+      line-height: 1.05;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .top-percent {
+      width: clamp(52px, 3vw, 118px);
+      color: #a3c1e7;
+      font-size: clamp(12px, 0.72vw, 28px);
+      line-height: 1.05;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .top-track {
+      height: clamp(5px, 0.28vw, 11px);
+      margin-left: clamp(30px, 1.55vw, 60px);
+      margin-right: clamp(40px, 2.1vw, 82px);
+      overflow: hidden;
+    }
+
+    .top-bar {
+      height: 100%;
+      max-width: 100%;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 0 0 7px rgba(74, 144, 226, 0.28);
+    }
+
+    .bar-1 {
+      background: linear-gradient(90deg, rgba(255, 87, 34, 0.55), #ff5722);
+    }
+
+    .bar-2 {
+      background: linear-gradient(90deg, rgba(255, 140, 66, 0.55), #ff8c42);
+    }
+
+    .bar-3 {
+      background: linear-gradient(90deg, rgba(255, 179, 71, 0.55), #ffb347);
+    }
+
+    .bar-normal {
+      background: linear-gradient(90deg, rgba(74, 144, 226, 0.5), #4a90e2);
+    }
+
+    .legend-text {
+      fill: #a3c1e7;
+      font-size: 18px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <header class="dashboard-header">
+      <h1 class="header-title">中企云链经营监控大屏</h1>
+      <div class="date" id="currentDate"></div>
+    </header>
+
+    <main class="dashboard-content">
+      <section class="charts-grid">
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>产业链长走势图</h2>
+            <span class="unit">单位：家</span>
+          </div>
+          <div class="chart-body" id="industryChainChart"></div>
+        </article>
+
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>用户注册走势图</h2>
+            <span class="unit">单位：家</span>
+          </div>
+          <div class="chart-body" id="userRegistrationChart"></div>
+        </article>
+
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>行业分布top10</h2>
+            <span class="unit">单位：家</span>
+          </div>
+          <div class="top-list" id="industryDistributionList"></div>
+        </article>
+
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>云信确权及融资走势图</h2>
+            <span class="unit">单位：亿元</span>
+          </div>
+          <div class="chart-body" id="financingChart"></div>
+        </article>
+
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>合作银行走势图</h2>
+            <span class="unit">单位：家</span>
+          </div>
+          <div class="chart-body" id="cooperationBankChart"></div>
+        </article>
+
+        <article class="chart-card">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="chart-header">
+            <h2>银行放款top10</h2>
+            <span class="unit">单位：亿元</span>
+          </div>
+          <div class="top-list" id="bankLoanList"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const DATA = {
+      industryChain: {
+        years: ["2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年", "2026年"],
+        values: [29, 90, 232, 618, 1140, 2100, 3086, 4600, 6600, 8347, 10361]
+      },
+      userRegistration: {
+        years: ["2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年", "2026年"],
+        values: [2663, 6758, 16113, 39262, 75079, 137386, 227081, 365000, 557000, 678627, 775936]
+      },
+      cooperationBank: {
+        years: ["2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年", "2026年"],
+        values: [1, 7, 55, 263, 642, 1226, 1745, 2700, 3600, 4301, 4984]
+      },
+      industryDistribution: [
+        { name: "批发和零售业", value: 238180, percent: "30.62%" },
+        { name: "建筑业", value: 190810, percent: "24.53%" },
+        { name: "制造业", value: 131375, percent: "16.89%" },
+        { name: "科学研究和技术服务业", value: 69184, percent: "8.90%" },
+        { name: "租赁和商务服务业", value: 65780, percent: "8.46%" },
+        { name: "交通运输、仓储和邮政业", value: 23320, percent: "3.00%" },
+        { name: "信息传输、软件和信息技术服务业", value: 17713, percent: "2.28%" },
+        { name: "居民服务、修理和其他服务业", value: 6690, percent: "0.86%" },
+        { name: "水利、环境和公共设施管理业", value: 4803, percent: "0.62%" },
+        { name: "农、林、牧、渔业", value: 4148, percent: "0.53%" }
+      ],
+      financing: {
+        years: ["2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年", "2023年", "2024年", "2025年", "2026(E)"],
+        industryConfirmation: [89, 165, 279, 642, 1283, 2414, 3482, 5170, 6160, 5894, 6500],
+        financingLoan: [29, 87, 154, 346, 812, 1769, 2574, 3700, 4430, 4273, 5000]
+      },
+      bankLoan: [
+        { name: "农业银行", value: 5791.81, percent: "30.6%" },
+        { name: "工商银行", value: 3689.05, percent: "19.5%" },
+        { name: "中信银行", value: 1282.54, percent: "6.8%" },
+        { name: "交通银行", value: 1224.45, percent: "6.5%" },
+        { name: "邮储银行", value: 846.12, percent: "4.5%" },
+        { name: "民生银行", value: 651.76, percent: "3.4%" },
+        { name: "浙商银行", value: 542.11, percent: "2.9%" },
+        { name: "北京银行", value: 464.50, percent: "2.5%" },
+        { name: "中国银行", value: 463.85, percent: "2.4%" },
+        { name: "华夏银行", value: 453.09, percent: "2.4%" }
+      ]
+    };
+
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const CHART = { width: 820, height: 430, left: 82, right: 36, top: 34, bottom: 76 };
+    const plotWidth = CHART.width - CHART.left - CHART.right;
+    const plotHeight = CHART.height - CHART.top - CHART.bottom;
+
+    function setDate() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      document.getElementById("currentDate").textContent = `${y}年${m}月${d}日`;
+    }
+
+    function formatNumber(value) {
+      return Math.round(value).toLocaleString("en-US");
+    }
+
+    function svgEl(tag, attrs = {}, text = "") {
+      const el = document.createElementNS(SVG_NS, tag);
+      Object.keys(attrs).forEach((key) => el.setAttribute(key, attrs[key]));
+      if (text !== "") el.textContent = text;
+      return el;
+    }
+
+    function makeSvg() {
+      const svg = svgEl("svg", {
+        class: "chart-svg",
+        viewBox: `0 0 ${CHART.width} ${CHART.height}`,
+        preserveAspectRatio: "none"
+      });
+      return svg;
+    }
+
+    function yPos(value, maxValue) {
+      return CHART.top + plotHeight - (value / maxValue) * plotHeight;
+    }
+
+    function xPos(index, total) {
+      if (total <= 1) return CHART.left + plotWidth / 2;
+      return CHART.left + (index / (total - 1)) * plotWidth;
+    }
+
+    function drawGrid(svg, maxValue, tickStep) {
+      for (let v = 0; v <= maxValue; v += tickStep) {
+        const y = yPos(v, maxValue);
+        svg.appendChild(svgEl("line", {
+          class: "grid-line",
+          x1: CHART.left,
+          y1: y,
+          x2: CHART.left + plotWidth,
+          y2: y
+        }));
+        svg.appendChild(svgEl("text", {
+          class: "axis-text",
+          x: CHART.left - 14,
+          y: y + 6,
+          "text-anchor": "end"
+        }, formatNumber(v)));
+      }
+      svg.appendChild(svgEl("line", {
+        class: "axis-line",
+        x1: CHART.left,
+        y1: CHART.top + plotHeight,
+        x2: CHART.left + plotWidth,
+        y2: CHART.top + plotHeight
+      }));
+    }
+
+    function drawXAxis(svg, labels) {
+      labels.forEach((label, index) => {
+        const x = xPos(index, labels.length);
+        const y = CHART.top + plotHeight + 42;
+        const text = svgEl("text", {
+          class: "axis-text",
+          x,
+          y,
+          "text-anchor": "end",
+          transform: `rotate(-35 ${x} ${y})`
+        }, label);
+        svg.appendChild(text);
+      });
+    }
+
+    function renderBarChart(targetId, labels, values, options) {
+      const svg = makeSvg();
+      const defs = svgEl("defs");
+      const gradient = svgEl("linearGradient", { id: `${targetId}Gradient`, x1: "0", y1: "0", x2: "0", y2: "1" });
+      gradient.appendChild(svgEl("stop", { offset: "0%", "stop-color": options.topColor }));
+      gradient.appendChild(svgEl("stop", { offset: "100%", "stop-color": options.bottomColor }));
+      defs.appendChild(gradient);
+      svg.appendChild(defs);
+
+      drawGrid(svg, options.maxValue, options.tickStep);
+      drawXAxis(svg, labels);
+
+      const slot = plotWidth / values.length;
+      const barWidth = Math.max(8, slot * 0.46);
+      values.forEach((value, index) => {
+        const x = CHART.left + slot * index + (slot - barWidth) / 2;
+        const y = yPos(value, options.maxValue);
+        const h = CHART.top + plotHeight - y;
+        svg.appendChild(svgEl("rect", {
+          x,
+          y,
+          width: barWidth,
+          height: Math.max(h, 2),
+          rx: 6,
+          fill: `url(#${targetId}Gradient)`,
+          filter: "drop-shadow(0 0 4px rgba(255, 140, 66, 0.55))"
+        }));
+        svg.appendChild(svgEl("text", {
+          class: "label-text",
+          x: x + barWidth / 2,
+          y: Math.max(CHART.top + 18, y - 10),
+          "text-anchor": "middle"
+        }, formatNumber(value)));
+      });
+
+      document.getElementById(targetId).replaceChildren(svg);
+    }
+
+    function pointsFor(values, maxValue) {
+      return values.map((value, index) => [xPos(index, values.length), yPos(value, maxValue), value]);
+    }
+
+    function pathFromPoints(points) {
+      return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point[0]} ${point[1]}`).join(" ");
+    }
+
+    function areaFromPoints(points) {
+      const bottom = CHART.top + plotHeight;
+      return `${pathFromPoints(points)} L ${points[points.length - 1][0]} ${bottom} L ${points[0][0]} ${bottom} Z`;
+    }
+
+    function renderLineChart(targetId, labels, series, options) {
+      const svg = makeSvg();
+      const defs = svgEl("defs");
+      series.forEach((item, index) => {
+        const gradient = svgEl("linearGradient", { id: `${targetId}Area${index}`, x1: "0", y1: "0", x2: "0", y2: "1" });
+        gradient.appendChild(svgEl("stop", { offset: "0%", "stop-color": item.areaColor, "stop-opacity": "0.42" }));
+        gradient.appendChild(svgEl("stop", { offset: "100%", "stop-color": item.areaColor, "stop-opacity": "0.03" }));
+        defs.appendChild(gradient);
+      });
+      svg.appendChild(defs);
+
+      drawGrid(svg, options.maxValue, options.tickStep);
+      drawXAxis(svg, labels);
+
+      if (options.legend) {
+        let legendX = CHART.left + plotWidth - 230;
+        options.legend.forEach((item) => {
+          svg.appendChild(svgEl("line", { x1: legendX, y1: 26, x2: legendX + 28, y2: 26, stroke: item.color, "stroke-width": 4 }));
+          svg.appendChild(svgEl("circle", { cx: legendX + 14, cy: 26, r: 3.5, fill: item.color }));
+          svg.appendChild(svgEl("text", { class: "legend-text", x: legendX + 36, y: 32 }, item.name));
+          legendX += 120;
+        });
+      }
+
+      series.forEach((item, seriesIndex) => {
+        const pts = pointsFor(item.values, options.maxValue);
+        svg.appendChild(svgEl("path", {
+          d: areaFromPoints(pts),
+          fill: `url(#${targetId}Area${seriesIndex})`
+        }));
+        svg.appendChild(svgEl("path", {
+          d: pathFromPoints(pts),
+          fill: "none",
+          stroke: item.color,
+          "stroke-width": item.width || 4.5,
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round",
+          filter: `drop-shadow(0 0 5px ${item.glow || item.color})`
+        }));
+        pts.forEach((point) => {
+          svg.appendChild(svgEl("circle", {
+            cx: point[0],
+            cy: point[1],
+            r: 5,
+            fill: "#0d1f3c",
+            stroke: item.color,
+            "stroke-width": 4
+          }));
+          svg.appendChild(svgEl("text", {
+            class: "label-text",
+            x: point[0],
+            y: Math.max(CHART.top + 18, point[1] - 15),
+            "text-anchor": "middle",
+            fill: item.labelColor || item.color
+          }, formatNumber(point[2])));
+        });
+      });
+
+      document.getElementById(targetId).replaceChildren(svg);
+    }
+
+    function renderTopList(targetId, rows, formatter) {
+      const max = Math.max.apply(null, rows.map((row) => row.value));
+      const html = rows.map((row, index) => {
+        const rank = index + 1;
+        const rankClass = rank <= 3 ? `rank-${rank}` : "rank-normal";
+        const barClass = rank <= 3 ? `bar-${rank}` : "bar-normal";
+        const width = Math.max(2, (row.value / max) * 100);
+        return `
+          <div class="top-row">
+            <div class="top-main">
+              <div class="top-name-wrap">
+                <span class="rank ${rankClass}">${rank}</span>
+                <span class="top-name">${row.name}</span>
+              </div>
+              <div class="top-metrics">
+                <span class="top-value">${formatter(row.value)}</span>
+                <span class="top-percent">${row.percent}</span>
+              </div>
+            </div>
+            <div class="top-track">
+              <div class="top-bar ${barClass}" style="width: ${width}%"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+      document.getElementById(targetId).innerHTML = html;
+    }
+
+    function renderAll() {
+      setDate();
+      renderBarChart("industryChainChart", DATA.industryChain.years, DATA.industryChain.values, {
+        maxValue: 12000,
+        tickStep: 2000,
+        topColor: "#ffb347",
+        bottomColor: "#ff6f1e"
+      });
+      renderLineChart("userRegistrationChart", DATA.userRegistration.years, [
+        {
+          values: DATA.userRegistration.values,
+          color: "#ff8a66",
+          labelColor: "#ffd3c4",
+          areaColor: "#ff8a66",
+          glow: "rgba(255, 138, 102, 0.8)"
+        }
+      ], {
+        maxValue: 800000,
+        tickStep: 200000
+      });
+      renderTopList("industryDistributionList", DATA.industryDistribution, formatNumber);
+      renderLineChart("financingChart", DATA.financing.years, [
+        {
+          values: DATA.financing.industryConfirmation,
+          color: "#ff6b36",
+          labelColor: "#ffb347",
+          areaColor: "#ff6b36",
+          glow: "rgba(255, 107, 54, 0.75)"
+        },
+        {
+          values: DATA.financing.financingLoan,
+          color: "#63d36c",
+          labelColor: "#8fe68f",
+          areaColor: "#63d36c",
+          glow: "rgba(99, 211, 108, 0.72)"
+        }
+      ], {
+        maxValue: 7000,
+        tickStep: 1000,
+        legend: [
+          { name: "产业确权", color: "#ff6b36" },
+          { name: "融资放款", color: "#63d36c" }
+        ]
+      });
+      renderBarChart("cooperationBankChart", DATA.cooperationBank.years, DATA.cooperationBank.values, {
+        maxValue: 5000,
+        tickStep: 1000,
+        topColor: "#ffd45a",
+        bottomColor: "#ff8428"
+      });
+      renderTopList("bankLoanList", DATA.bankLoan, formatNumber);
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>

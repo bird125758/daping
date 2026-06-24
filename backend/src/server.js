@@ -50,7 +50,7 @@ const defaultData = {
     { name: '工商银行', value: 3689.05, percent: '19.5%' },
     { name: '中信银行', value: 1282.54, percent: '6.8%' },
     { name: '交通银行', value: 1224.45, percent: '6.5%' },
-    { name: '中国邮政储蓄银行', value: 846.12, percent: '4.5%' },
+    { name: '邮储银行', value: 846.12, percent: '4.5%' },
     { name: '民生银行', value: 651.76, percent: '3.4%' },
     { name: '浙商银行', value: 542.11, percent: '2.9%' },
     { name: '北京银行', value: 464.50, percent: '2.5%' },
