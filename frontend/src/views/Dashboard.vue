@@ -1071,8 +1071,8 @@ onBeforeUnmount(() => {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 6px;
+  justify-content: flex-start;
+  gap: 2px;
 }
 
 .top-list-main {
