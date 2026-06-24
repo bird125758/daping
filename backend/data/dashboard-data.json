@@ -24,7 +24,7 @@
       4600,
       6600,
       8347,
-      10300
+      10361
     ]
   },
   "userRegistration": {
@@ -52,7 +52,7 @@
       365000,
       557000,
       678627,
-      773153
+      775936
     ]
   },
   "cooperationBank": {
@@ -80,59 +80,59 @@
       2700,
       3600,
       4301,
-      4951
+      4984
     ]
   },
   "industryDistribution": [
     {
       "name": "批发和零售业",
-      "value": 236250,
-      "percent": "30.43%"
+      "value": 238180,
+      "percent": "30.62%"
     },
     {
       "name": "建筑业",
-      "value": 189413,
-      "percent": "25.21%"
+      "value": 190810,
+      "percent": "24.53%"
     },
     {
       "name": "制造业",
-      "value": 130469,
-      "percent": "16.08%"
+      "value": 131375,
+      "percent": "16.89%"
     },
     {
       "name": "科学研究和技术服务业",
-      "value": 68388,
-      "percent": "9.14%"
+      "value": 69184,
+      "percent": "8.90%"
     },
     {
       "name": "租赁和商务服务业",
-      "value": 65286,
-      "percent": "8.58%"
+      "value": 65780,
+      "percent": "8.46%"
     },
     {
       "name": "交通运输、仓储和邮政业",
-      "value": 23159,
-      "percent": "3.04%"
+      "value": 23320,
+      "percent": "3.00%"
     },
     {
       "name": "信息传输、软件和信息技术服务业",
-      "value": 17509,
-      "percent": "2.29%"
+      "value": 17713,
+      "percent": "2.28%"
     },
     {
       "name": "居民服务、修理和其他服务业",
-      "value": 6635,
+      "value": 6690,
       "percent": "0.86%"
     },
     {
       "name": "水利、环境和公共设施管理业",
-      "value": 4769,
-      "percent": "0.64%"
+      "value": 4803,
+      "percent": "0.62%"
     },
     {
       "name": "农、林、牧、渔业",
-      "value": 4101,
-      "percent": "0.55%"
+      "value": 4148,
+      "percent": "0.53%"
     }
   ],
   "financing": {
@@ -179,53 +179,53 @@
   "bankLoan": [
     {
       "name": "农业银行",
-      "value": 5777.46,
-      "percent": "28.99%"
+      "value": 5791.81,
+      "percent": "30.6%"
     },
     {
       "name": "工商银行",
-      "value": 3644.99,
-      "percent": "18.29%"
+      "value": 3689.05,
+      "percent": "19.5%"
     },
     {
       "name": "中信银行",
-      "value": 1288.97,
-      "percent": "6.47%"
+      "value": 1282.54,
+      "percent": "6.8%"
     },
     {
       "name": "交通银行",
-      "value": 1219.79,
-      "percent": "6.12%"
-    },
-    {
-      "name": "民生银行",
-      "value": 649.86,
-      "percent": "3.26%"
-    },
-    {
-      "name": "浙商银行",
-      "value": 541.57,
-      "percent": "2.72%"
-    },
-    {
-      "name": "北京银行",
-      "value": 461.64,
-      "percent": "2.32%"
-    },
-    {
-      "name": "中国银行",
-      "value": 461.34,
-      "percent": "2.31%"
-    },
-    {
-      "name": "青岛银行",
-      "value": 389.89,
-      "percent": "1.96%"
+      "value": 1224.45,
+      "percent": "6.5%"
     },
     {
       "name": "中国邮政储蓄银行",
-      "value": 269.12,
-      "percent": "1.35%"
+      "value": 846.12,
+      "percent": "4.5%"
+    },
+    {
+      "name": "民生银行",
+      "value": 651.76,
+      "percent": "3.4%"
+    },
+    {
+      "name": "浙商银行",
+      "value": 542.11,
+      "percent": "2.9%"
+    },
+    {
+      "name": "北京银行",
+      "value": 464.5,
+      "percent": "2.5%"
+    },
+    {
+      "name": "中国银行",
+      "value": 463.85,
+      "percent": "2.4%"
+    },
+    {
+      "name": "华夏银行",
+      "value": 453.09,
+      "percent": "2.4%"
     }
   ]
 }
