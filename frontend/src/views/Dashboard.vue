@@ -40,7 +40,7 @@
           <div ref="userRegistrationRef" class="chart-container"></div>
         </div>
 
-        <div class="chart-card">
+        <div class="chart-card top-list-card">
           <div class="card-border">
             <div class="corner corner-tl"></div>
             <div class="corner corner-tr"></div>
@@ -106,7 +106,7 @@
           <div ref="cooperationBankRef" class="chart-container"></div>
         </div>
 
-        <div class="chart-card">
+        <div class="chart-card top-list-card">
           <div class="card-border">
             <div class="corner corner-tl"></div>
             <div class="corner corner-tr"></div>
@@ -1047,6 +1047,10 @@ onBeforeUnmount(() => {
   font-weight: 500;
 }
 
+.top-list-card .chart-header {
+  margin-bottom: 8px;
+}
+
 .chart-container,
 .chart-container-horizontal {
   flex: 1;
@@ -1059,17 +1063,16 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   justify-content: stretch;
-  padding: 8px 8px 6px;
+  padding: 4px 8px 6px;
 }
 
 .top-list-row {
-  flex: 1;
-  flex-basis: 0;
+  flex: 1 1 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  gap: 7px;
+  justify-content: center;
+  gap: 6px;
 }
 
 .top-list-main {
