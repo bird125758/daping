@@ -8,6 +8,17 @@
       </div>
     </header>
 
+    <button
+      class="fullscreen-btn"
+      type="button"
+      :aria-label="isFullscreen ? '退出全屏' : '全屏展示'"
+      :aria-pressed="isFullscreen"
+      :title="isFullscreen ? '退出全屏' : '全屏展示'"
+      @click="toggleFullscreen"
+    >
+      {{ isFullscreen ? '退出全屏' : '全屏' }}
+    </button>
+
     <!-- 主要内容区域 -->
     <main class="dashboard-content">
       <div class="charts-grid">
@@ -163,6 +174,7 @@ const currentDate = computed(() => {
 
 // 日期字体大小（与GIF高度保持固定比例）
 const dateFontSize = ref(14)
+const isFullscreen = ref(false)
 
 // 计算日期字体大小
 const updateDateFontSize = () => {
@@ -171,6 +183,22 @@ const updateDateFontSize = () => {
     const headerHeight = header.offsetHeight
     // 字体大小设置为标题栏高度的 20%（205px时约41px）
     dateFontSize.value = Math.round(headerHeight * 0.20)
+  }
+}
+
+const syncFullscreenState = () => {
+  isFullscreen.value = document.fullscreenElement !== null
+}
+
+const toggleFullscreen = async () => {
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen()
+    } else {
+      await document.documentElement.requestFullscreen()
+    }
+  } catch (error) {
+    console.error('切换全屏失败:', error)
   }
 }
 
@@ -842,6 +870,7 @@ const initBankLoanChart = () => {
 onMounted(() => {
   refreshCharts()
   updateDateFontSize() // 初始化日期字体大小
+  document.addEventListener('fullscreenchange', syncFullscreenState)
   
   window.addEventListener('resize', () => {
     charts.forEach(chart => chart.resize())
@@ -850,6 +879,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', syncFullscreenState)
   charts.forEach(chart => chart.dispose())
 })
 </script>
@@ -929,6 +959,36 @@ onBeforeUnmount(() => {
   padding: 20px;
   overflow: hidden;
   min-height: 0;
+}
+
+.fullscreen-btn {
+  position: fixed;
+  top: 50%;
+  right: -41px;
+  z-index: 20;
+  width: 52px;
+  height: 104px;
+  padding: 12px 10px;
+  border: 1px solid rgba(116, 189, 255, 0.85);
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+  background: rgba(32, 107, 194, 0.9);
+  box-shadow: -2px 0 14px rgba(0, 0, 0, 0.32);
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-orientation: mixed;
+  transform: translateY(-50%);
+  transition: right 0.22s ease, background 0.2s ease;
+  writing-mode: vertical-rl;
+}
+
+.fullscreen-btn:hover,
+.fullscreen-btn:focus-visible {
+  right: 0;
+  background: #2b8ff0;
 }
 
 .charts-grid {
